@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("c#2023")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ac293004d47ede8fbe61e3b64875158997fcdf39")]
 [assembly: System.Reflection.AssemblyProductAttribute("c#2023")]
 [assembly: System.Reflection.AssemblyTitleAttribute("c#2023")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

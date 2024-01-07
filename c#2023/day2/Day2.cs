@@ -57,7 +57,7 @@ internal class Day2
         }
     }
 
-    public void Setp1()
+    public void Step1()
     {
         int sum = 0;
         foreach (var g in games)
@@ -83,7 +83,7 @@ internal class Day2
         Console.WriteLine($"Day 2 Step 1 {sum}");
     }
 
-    public void Setp2()
+    public void Step2()
     {
         int sum = 0;
         foreach (var g in games)

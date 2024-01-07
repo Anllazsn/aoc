@@ -14,3 +14,5 @@ C:\Projetos\aoc\c#2023\obj\Debug\net8.0\c#2023.genruntimeconfig.cache
 C:\Projetos\aoc\c#2023\obj\Debug\net8.0\ref\c#2023.dll
 C:\Projetos\aoc\c#2023\bin\Debug\net8.0\day1\input1.txt
 C:\Projetos\aoc\c#2023\bin\Debug\net8.0\day2\input2.txt
+C:\Projetos\aoc\c#2023\bin\Debug\net8.0\day3\input3.txt
+C:\Projetos\aoc\c#2023\obj\Debug\net8.0\c#2023.sourcelink.json
