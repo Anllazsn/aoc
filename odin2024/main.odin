@@ -8,8 +8,13 @@ import "core:slice"
 
 main :: proc() {
     fmt.println("Advent of Code 2024")
-    //day1()
-    day2()
+    // day1_input := read_file("days/day1.txt")
+    // day1(day1_input)
+    // delete(day1_input)
+
+    day2_input := read_file("days/day2.txt")
+    day2(day2_input)
+    delete(day2_input)
 }
 
 read_file :: proc(filename: string) -> string {
@@ -20,15 +25,13 @@ read_file :: proc(filename: string) -> string {
     return string(data)
 }
 
-day1 :: proc() {
+day1 :: proc(input: string) {
     fmt.println(">>Day 1")
-    input := read_file("days/day1.txt")
-    defer delete(input)
     day1_part1(input)
     day1_part2(input)
 }
 
-day1_part1_test :: proc() {
+day1_test_data :: proc() -> string {
     input := `3   4
 4   3
 2   5
@@ -36,18 +39,7 @@ day1_part1_test :: proc() {
 3   9
 3   3
 `
-    day1_part1(input, 1)
-}
-
-day1_part2_test :: proc() {
-    input := `3   4
-4   3
-2   5
-1   3
-3   9
-3   3
-`
-    day1_part2(input, 1)
+    return input
 }
 
 day1_part1 :: proc(input: string, n_size := 5) {
@@ -115,14 +107,94 @@ day1_part2 :: proc(input: string, n_size := 5) {
     fmt.printf("Day 1 part 2 >>> %d\n", sum)
 }
 
-day2 :: proc() {
+day2 :: proc(input: string) {
     fmt.println(">>Day 2")
-    input := read_file("days/day2.txt")
-    defer delete(input)
+    
     day2_part1(input)
-    // day2_part2(input)
+    day2_part2(input)
+}
+
+day2_test_data :: proc() -> string {
+    input := `7 6 4 2 1
+1 2 7 8 9
+9 7 6 2 1
+1 3 2 4 5
+8 6 4 4 1
+1 3 6 7 9
+`
+    return input
 }
 
 day2_part1 :: proc(input: string) {
+    sum_safe_report := 0
+    prev_report := -1
+    is_safe_report := 0
+    direction := 0 //-1 decreasing / 0 not set / 1 increasing
+    for row, i in strings.split(input, "\n") {
+        if (row == "") {
+            break
+        }
+
+        for col, j in strings.split(row, " ") {
+            report := strconv.atoi(col)
+            if prev_report == -1 {
+                prev_report = report
+                continue
+            }
+
+            //find direction
+            if prev_report < report { //asc
+                if direction == -1 { //if direction was desc it's unsafe
+                    is_safe_report = 0
+                    break
+                }
+                direction = 1
+            } else if prev_report > report { //desc
+                if direction == 1 { //if direction was asc it's unsafe
+                    is_safe_report = 0
+                    break
+                }
+                direction = -1
+            } else {
+                is_safe_report = 0
+                break
+            }
+            //fmt.printf("prev [%d]  current [%d] direction[%d]\n", prev_report, report, direction)
+
+            if direction == 1 {
+                diff := report - prev_report
+                if diff >= 1 && diff <= 3 {
+                    is_safe_report = 1
+                    prev_report = report
+                    continue
+                } else {
+                    is_safe_report = 0
+                    break
+                }
+            } else {
+                diff := prev_report - report
+                if diff >= 1 && diff <= 3 {
+                    //fmt.println("AQUI")
+                    is_safe_report = 1
+                    prev_report = report
+                    continue
+                } else {
+                    is_safe_report = 0
+                    break
+                }
+            }
+        }
+
+        sum_safe_report += is_safe_report
+
+        prev_report = -1
+        direction = 0
+        is_safe_report = 0
+    }
+
+    fmt.printf("Day 2 part 1 >>> %d\n", sum_safe_report)
+}
+
+day2_part2 :: proc(input: string) {
 
 }
