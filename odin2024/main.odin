@@ -127,74 +127,118 @@ day2_test_data :: proc() -> string {
 
 day2_part1 :: proc(input: string) {
     sum_safe_report := 0
-    prev_report := -1
     is_safe_report := 0
-    direction := 0 //-1 decreasing / 0 not set / 1 increasing
     for row, i in strings.split(input, "\n") {
         if (row == "") {
             break
         }
 
+        reports: [dynamic]int
         for col, j in strings.split(row, " ") {
-            report := strconv.atoi(col)
-            if prev_report == -1 {
-                prev_report = report
-                continue
-            }
+            append(&reports, strconv.atoi(col))
+        }
 
-            //find direction
-            if prev_report < report { //asc
-                if direction == -1 { //if direction was desc it's unsafe
-                    is_safe_report = 0
-                    break
-                }
-                direction = 1
-            } else if prev_report > report { //desc
-                if direction == 1 { //if direction was asc it's unsafe
-                    is_safe_report = 0
-                    break
-                }
-                direction = -1
-            } else {
-                is_safe_report = 0
-                break
-            }
-            //fmt.printf("prev [%d]  current [%d] direction[%d]\n", prev_report, report, direction)
+        sum_safe_report += day2_is_safe_report(reports[:])
+        is_safe_report = 0
+    }
 
-            if direction == 1 {
-                diff := report - prev_report
-                if diff >= 1 && diff <= 3 {
-                    is_safe_report = 1
-                    prev_report = report
-                    continue
-                } else {
-                    is_safe_report = 0
-                    break
+    //549 Correct
+    fmt.printf("Day 2 part 1 >>> %d\n", sum_safe_report)
+}
+
+day2_part2 :: proc(input: string) {
+    sum_safe_report := 0
+    is_safe_report := 0
+    for row, i in strings.split(input, "\n") {
+        if (row == "") {
+            break
+        }
+
+        reports: [dynamic]int
+        for col, j in strings.split(row, " ") {
+            append(&reports, strconv.atoi(col))
+        }
+
+        is_safe_report = day2_is_safe_report(reports[:])
+        if is_safe_report == 0 {
+            //brute force removing 1
+            //TODO: refactor
+            for tries := 0; tries < len(reports); tries += 1 {
+                reports2: [dynamic]int
+                for copy, c in reports {
+                    if c == tries {
+                        //skip
+                        continue
+                    }
+                    append(&reports2, copy)
                 }
-            } else {
-                diff := prev_report - report
-                if diff >= 1 && diff <= 3 {
-                    //fmt.println("AQUI")
-                    is_safe_report = 1
-                    prev_report = report
-                    continue
-                } else {
-                    is_safe_report = 0
+
+                is_safe_report = day2_is_safe_report(reports2[:])
+                delete(reports2)
+                if is_safe_report == 1 {
                     break
                 }
             }
         }
 
+        delete(reports)
         sum_safe_report += is_safe_report
-
-        prev_report = -1
-        direction = 0
-        is_safe_report = 0
     }
 
-    fmt.printf("Day 2 part 1 >>> %d\n", sum_safe_report)
+    // Correct 589
+    fmt.printf("Day 2 part 2 >>> %d\n", sum_safe_report)
 }
 
-day2_part2 :: proc(input: string) {
+day2_is_safe_report :: proc(reports: []int) -> int {
+    prev_report := -1
+    is_safe_report := 0
+    direction := 0 //-1 decreasing / 0 not set / 1 increasing
+    for report in reports {
+        if prev_report == -1 {
+            prev_report = report
+            continue
+        }
 
+        //find direction
+        if prev_report < report { //asc
+            if direction == -1 { //if direction was desc it's unsafe
+                is_safe_report = 0
+                break
+            }
+            direction = 1
+        } else if prev_report > report { //desc
+            if direction == 1 { //if direction was asc it's unsafe
+                is_safe_report = 0
+                break
+            }
+            direction = -1
+        } else {
+            is_safe_report = 0
+            break
+        }
+
+        if direction == 1 {
+            diff := report - prev_report
+            if diff >= 1 && diff <= 3 {
+                is_safe_report = 1
+                prev_report = report
+                continue
+            } else {
+                is_safe_report = 0
+                break
+            }
+        } else {
+            diff := prev_report - report
+            if diff >= 1 && diff <= 3 {
+                is_safe_report = 1
+                prev_report = report
+                continue
+            } else {
+                is_safe_report = 0
+                break
+            }
+        }
+    }
+
+    return is_safe_report
 }
