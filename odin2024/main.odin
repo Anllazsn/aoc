@@ -12,9 +12,13 @@ main :: proc() {
     // day1(day1_input)
     // delete(day1_input)
 
-    day2_input := read_file("days/day2.txt")
-    day2(day2_input)
-    delete(day2_input)
+    // day2_input := read_file("days/day2.txt")
+    // day2(day2_input)
+    // delete(day2_input)
+
+    day3_input := read_file("days/day3.txt")
+    day3(day3_test_data())
+    delete(day3_input)
 }
 
 read_file :: proc(filename: string) -> string {
@@ -241,4 +245,53 @@ day2_is_safe_report :: proc(reports: []int) -> int {
     }
 
     return is_safe_report
+}
+
+day3 :: proc(input: string) {
+    fmt.println(">>Day 3")
+    
+    day3_part1(input)
+    day3_part2(input)
+}
+
+day3_test_data :: proc() -> string {
+    input := `xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))
+`
+    return input
+}
+
+day3_part1 :: proc(input: string) {
+    for line in strings.split(input, "\n") {
+        for i := 0; i < len(line); i += 1 {
+            mul_token := line[i:i + 3] 
+            if mul_token == "mul" {
+                //check if it's (#,#)
+                i += 3 //advance
+                if line[i] == '(' {
+                    //check for a number
+                    x := 0
+                    y := 0
+                    for j := i; j < len(line); j += 1 {
+                        // check until , is found
+                        if line[j] == ',' {
+                            token := line[i + 1: j]
+                            fmt.println(token)
+                            x = strconv.atoi(token)
+                            // advance to next number
+                        }
+                    }
+                }
+                fmt.printf("Here %c\n", line[i])
+            }
+
+            //fmt.println(line[i:i + 3])
+            if i + 3 == len(line) {
+                break
+            }
+        }
+    }
+}
+
+day3_part2 :: proc(input: string) {
+    
 }
