@@ -1,10 +1,11 @@
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
-	static String input_teste = """
+	static String example = """
 		L68
 		L30
 		R48
@@ -19,10 +20,11 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
+			List<String> test = Arrays.asList(example.split("\\r?\\n"));
 			Path path = Paths.get("inputs/day1.txt");
-			//String input = input.split("\\r?\\n");
 			List<String> input = Files.readAllLines(path);
-			part1(input);
+			//part1(input);
+			part2(input);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -48,6 +50,8 @@ public class Main {
 				}
 			}
 
+			// 1150
+
 			if (dial == 0) {
 				count++;
 			}
@@ -56,5 +60,38 @@ public class Main {
 		}
 
 		System.out.println("Part1: " + count);
+	}
+
+	public static void part2(List<String> input) {
+		int dial = 50;
+		int count = 0;
+		for (String line : input) {
+			String direction = line.substring(0, 1);
+			int value = Integer.valueOf(line.substring(1));
+			if ("L".equals(direction)) {
+				// Left
+				dial -= value;
+				while (dial < 0) {
+					dial = 100 - Math.abs(dial);
+					count++;
+				}
+			} else {
+				// Right
+				dial += value;
+				while (dial > 99) {
+					dial = Math.abs(dial) - 100;
+					count++;
+				}
+			}
+
+			if (dial == 0) {
+			//	count++;
+			}
+
+			//System.out.println(String.format("DIR %s VAL %d - %d", direction, value, dial));
+		}
+
+		System.out.println("Part2: " + count);
+
 	}
 }
